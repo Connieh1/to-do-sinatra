@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 
-  get '/users/new' do
+  get '/signup' do
     if !logged_in?
-    erb :'users/new'
+    erb :'users/signup'
     else
       redirect 'user/show'
     end
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   post '/users' do
     if params[:name] == "" || params[:email] == "" || params[:password] == ""
-      redirect to '/users/new'
+      redirect to '/users/signup'
     else
       @user = User.new(:name => params[:name], :email => params[:email], :password => params[:password])
       @user.save

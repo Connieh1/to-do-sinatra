@@ -19,6 +19,10 @@ class UsersController < ApplicationController
     end
   end
 
+  get '/login' do
+    if !logged_in?
+    erb :'/users/login'
+  end
   get '/users/:id' do
     @user = User.find_by(email: params[:email], password: params[:password])
     session[:user_id] = @user.id

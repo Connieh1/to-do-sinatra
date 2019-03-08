@@ -9,10 +9,16 @@ class TasksController < ApplicationController
     erb :'/tasks/new'
   end
 
+  get '/tasks/:id' do
+    @task = Task.find_by(params[:id])
+    erb :'/tasks/show'
+  end
+
   post '/tasks' do
+    binding.pry
     if logged_in?
-      if params[:name] != ""
-        @task = Task.create(name: params[:name], description: params[:description, deadline: params[:deadline], user_id: current_user.id])
+      if params[:task][:name] != ""
+        @task = Task.create(params[:task])
         redirect "/tasks/#{@task.id}"
       else
         redirect '/tasks/new'
@@ -20,11 +26,6 @@ class TasksController < ApplicationController
     else
       redirect '/'
     end
-  end
-
-  get '/tasks/:id' do
-    @task = Task.find_by(params[:id])
-    erb :'/tasks/show'
   end
 
   get '/tasks/:id/edit' do

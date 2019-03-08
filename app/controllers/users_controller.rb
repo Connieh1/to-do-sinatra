@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
 
-  get '/users/:slug' do
-    @user = User.find_by_slug(params[:slug])
-    erb :'users/show'
-  end
+  # get '/users/:slug' do
+  #   @user = User.find_by_slug(params[:slug])
+  #   erb :'users/show'
+  # end
 
 
   get '/signup' do
@@ -15,11 +15,12 @@ class UsersController < ApplicationController
   end
 
   post '/signup' do
-    if params[:username] == "" || params[:email] == "" || params[:password] == ""
-      redirect to '/users/signup'
+    if params[:user][:username] == "" || params[:user][:email] == "" || params[:user][:password] == ""
+      redirect to '/signup'
     else
-      @user = User.new(:username => params[:username], :email => params[:email], :password => params[:password])
+      @user = User.new(params[:user])
       @user.save
+
       session[:user_id] = @user.id
       redirect "/users/#{@user.id}"
     end
@@ -32,9 +33,8 @@ class UsersController < ApplicationController
   end
 
   post  '/login' do
-    @user = User.find_by(username: params[:username])
-    # binding.pry
-    if @user.authenticate(params[:password])
+    @user = User.find_by(username: params[:user][:username])
+    if @user && @user.authenticate(params[:user][:password])
       session[:user_id] = @user.id
       redirect "/users/#{@user.id}"
     else
@@ -48,8 +48,7 @@ class UsersController < ApplicationController
 
 
   get '/users/:id' do
-    @user = User.find_by(params)
-
+    @user = User.find_by(id: params[:id])
     erb :"/users/show"
   end
 

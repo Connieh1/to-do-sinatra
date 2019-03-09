@@ -1,12 +1,20 @@
 class TasksController < ApplicationController
 
   get '/tasks' do
-    @tasks = Task.all
-    erb :'/tasks/index'
+    if logged_in?
+      @tasks = Task.all
+      erb :'/tasks/index'
+    else
+      redirect '/login'
+    end
   end
 
   get '/tasks/new' do
-    erb :'/tasks/new'
+    if logged_in?
+      erb :'/tasks/new'
+    else
+      redirect '/login'
+    end
   end
 
   get '/tasks/:id' do
@@ -15,7 +23,6 @@ class TasksController < ApplicationController
   end
 
   post '/tasks' do
-    binding.pry
     if logged_in?
       if params[:task][:name] != ""
         @task = Task.create(params[:task])

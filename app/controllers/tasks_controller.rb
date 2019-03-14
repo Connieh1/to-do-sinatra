@@ -2,8 +2,9 @@ class TasksController < ApplicationController
 
   get '/tasks' do
     if logged_in?
+      @user = current_user
       @tasks = Task.all
-      erb :'/tasks/index'
+        erb :'/tasks/index'
     else
       redirect '/login'
     end
@@ -17,38 +18,98 @@ class TasksController < ApplicationController
     end
   end
 
-  get '/tasks/:id' do
-    @task = Task.find_by(params[:id])
-    erb :'/tasks/show'
-  end
-
   post '/tasks' do
     if logged_in?
       if params[:task][:name] != ""
-        @task = Task.create(params[:task])
+        @task = current_user.tasks.build(name: params[:task][:name], description: params[:task][:description], deadline: params[:task][:deadline])
+        # @task = Task.create(params[:task])
+        # @task.user = current_user
+        @task.save
         redirect "/tasks/#{@task.id}"
       else
         redirect '/tasks/new'
       end
     else
-      redirect '/'
+      redirect '/login'
+    end
+  end
+
+  get '/tasks/:id' do
+    if logged_in?
+      @task = Task.find_by(id: params[:id])
+      erb :'/tasks/show'
+    else
+      redirect '/login'
+    end
+  end
+
+  post '/tasks' do
+    if logged_in?
+      if params[:task][:name] != ""
+        @task = current_user.tasks.build(name: params[:task][:name], description: params[:task][:description], deadline: params[:task][:deadline])
+        # @task = Task.create(params[:task])
+        # @task.user = current_user
+        @task.save
+        redirect "/tasks/#{@task.id}"
+      else
+        redirect '/tasks/new'
+      end
+    else
+      redirect '/login'
     end
   end
 
   get '/tasks/:id/edit' do
-    @task = Task.find_by(params[:id])
+    @task = Task.find_by(id: params[:id])
     erb :'/tasks/edit'
   end
 
-  post '/tasks/:id' do
-    @task = Task.find_by(params[:id])
-    @task.update(params[:task])
-    redirect "/tasks/#{@task.id}"
+  get '/tasks/:id/edit' do
+    if logged_in?
+      @task = Task.find_by_id(params[:id])
+      if @task && @task.user == current_user
+        erb :'tasks/edit'
+      else
+        redirect to '/tasks'
+      end
+    else
+      redirect to '/login'
+    end
   end
 
-  delete '/tasks/:id' do
-    @task = Task.find_by(params[:id])
-    @task.destroy
+  patch '/tasks/:id' do
+    if logged_in?
+      if params[:content] == ""
+        redirect to "/tasks/#{params[:id]}/edit"
+      else
+        @task = Task.find_by_id(params[:id])
+        if @task && @task.user == current_user
+          if @task.update(content: params[:content])
+            binding.pry
+            redirect to "/tasks/#{@task.id}"
+          # else
+          #   redirect to "/tasks/#{@task.id}/edit"
+          end
+        # else
+        #   redirect to '/tasks'
+        end
+      end
+    else
+      redirect to '/login'
+    end
+  end
+
+
+  delete "/tasks/:id" do
+    if logged_in?
+      @task = Task.find_by_id(params[:id])
+      if @task && @task.user == current_user
+        @task.delete
+      end
+      redirect to '/tasks'
+    else
+      redirect to '/'
+    end
   end
 
 

@@ -1,9 +1,20 @@
+
+
 <h1><%= @user.username %></h1>
+<%= @user.email %><br>
+<br>
 
 <h2>To Do List</h2>
 <ul>
 
+<% @user.tasks.each do |task|  %>
+<li><a href="/tasks/<%= task.id %>"><%= task.name  %></a><br>
+<%= task.description  %><br>
+<%= task.deadline  %></li><br>
+<% end %>
+
 </ul>
 
-<p><a href="/tasks/new">New Task</a></p>
-<p><a href="/logout">Logout</a></p>
+
+<a href="/logout">Log Out</a>
+<a href="/tasks/new">Create New Task</a>

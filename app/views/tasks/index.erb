@@ -1,1 +1,13 @@
 <h1>Tasks Index</h1>
+
+<ul>
+
+<% @user.tasks.each do |task| %>
+
+<p><li><%= task.name %>  <%= task.deadline %></li></p>
+
+<% end %>
+
+</ul>
+
+<a href="/tasks/new">Create New Task</a>

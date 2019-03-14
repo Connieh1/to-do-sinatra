@@ -13,17 +13,22 @@ class UsersController < ApplicationController
       redirect to '/signup'
     else
       @user = User.new(params[:user])
-      @user.save
-      session[:user_id] = @user.id
-      redirect "/users/#{@user.id}"
+      if @user.save
+        session[:user_id] = @user.id
+        redirect "/users/#{@user.id}"
+      else
+        redirect  '/signup'
+      end
     end
+    redirect '/signup'
   end
 
   get '/login' do
     if !logged_in?
       erb :'/users/login'
     else
-      redirect '/login'
+      current_user
+      redirect "/users/show"
     end
   end
 

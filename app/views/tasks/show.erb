@@ -1,16 +1,18 @@
-<h1><%=@task.user.username%></h1>
+<h1><%=@task.user.username%>'s To Do </h1>
 
 <br>
 
-
-<h1><%= @task.name %></h1>
-<%= @task.description %><br>
-<%= @task.deadline %><br>
+<ul>
+  <li><h1><%= @task.name %></h1></li>
+    Description: <%= @task.description %><br>
+    Deadline: <%= @task.deadline %><br>
+</ul>
 <br>
-<a href="/tasks/<%= @task.id %>/edit">Edit Task</a>
+<p><a href="/tasks/<%= @task.id %>/edit">Edit Task</a></p>
 
 <form action="/tasks/<%= @task.id %>" method="post">
   <input type="hidden" name="_method" value="delete">
   <input type="submit" name="" value="Delete Task">
 </form>
-<a href="/users/show">My Tasks</a>
+<br>
+<p><a href="/users/<%=@task.user.id%>">My Tasks</a></p>

@@ -1,3 +1,4 @@
+
 <h1><%=@task.user.username%>'s To Do </h1>
 
 <br>
@@ -8,6 +9,8 @@
     Deadline: <%= @task.deadline %><br>
 </ul>
 <br>
+
+<p><a href="/users/<%=@task.user.id%>">My Tasks</a></p>
 <p><a href="/tasks/<%= @task.id %>/edit">Edit Task</a></p>
 
 <form action="/tasks/<%= @task.id %>" method="post">
@@ -15,4 +18,3 @@
   <input type="submit" name="" value="Delete Task">
 </form>
 <br>
-<p><a href="/users/<%=@task.user.id%>">My Tasks</a></p>

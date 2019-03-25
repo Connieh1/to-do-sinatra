@@ -16,8 +16,8 @@ Sign up or log in, create, read, edit, or delete tasks on your list.
 
 ## Built with
 
-Ruby
-Sinatra
+Ruby/
+Sinatra/
 ActiveRecord
 
 

@@ -14,15 +14,15 @@ You may run the application in the browser using Shotgun.
 
 Sign up or log in, create, read, edit, or delete tasks on your list.
 
-## Built with
+## Built With
 
-Ruby/
-Sinatra/
-ActiveRecord
+* Ruby
+* Sinatra
+* ActiveRecord
 
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-MIT. See License.md file.
+This project is licensed under the MIT License - see the LICENSE.md file for details.
